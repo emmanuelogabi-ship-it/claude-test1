@@ -48,20 +48,6 @@ export default function PanelShowcase() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Entrance animation — stagger numbers up
-    gsap.fromTo(
-      numberRefs.current,
-      { y: 60, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: "power3.out",
-        stagger: 0.1,
-        delay: 0.6,
-      }
-    );
-
     // Parallax on scroll
     const onScroll = () => {
       const scrollY = window.scrollY;
@@ -119,7 +105,6 @@ export default function PanelShowcase() {
           <div
             ref={(el) => { numberRefs.current[i] = el; }}
             className="panel-number"
-            style={{ opacity: 0 }}
           >
             {panel.number}
           </div>

@@ -15,12 +15,6 @@ export default function Nav() {
     const nav = navRef.current;
     if (!nav) return;
 
-    gsap.fromTo(
-      nav,
-      { y: -20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.3 }
-    );
-
     const onScroll = () => {
       if (window.scrollY > 20) {
         nav.classList.add("scrolled");
@@ -34,7 +28,7 @@ export default function Nav() {
   }, []);
 
   return (
-    <nav ref={navRef} className="floating-nav" style={{ opacity: 0 }}>
+    <nav ref={navRef} className="floating-nav">
       <span className="nav-logo">Reverb.</span>
 
       <div className="nav-links">
