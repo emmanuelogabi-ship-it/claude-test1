@@ -28,7 +28,7 @@ export default function Nav() {
   }, []);
 
   return (
-    <nav ref={navRef} className="floating-nav">
+    <nav ref={navRef} className="floating-nav" style={{ borderRadius: "8px" }}>
       <span className="nav-logo">Reverb.</span>
 
       <div className="nav-links">
