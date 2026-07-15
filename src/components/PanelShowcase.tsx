@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
+import LineButton from "./LineButton";
+import MobilePanels from "./MobilePanels";
 
 interface PanelData {
   id: number;
@@ -21,6 +23,7 @@ const panels: PanelData[] = [
     category: "Laboratory",
     title: "Discovery\nIndustry Solutions",
     image: "/images/1.jpg",
+    href: "/laboratory",
     description: "There is a discovery at the root of every breakthrough. A process refined in a laboratory that becomes the backbone of an entire industry. We design the systems that make those discoveries repeatable, scalable, and real.\n\nOur laboratory solutions power research facilities, pharmaceutical plants, and advanced testing environments across the globe. Every instrument calibrated. Every protocol documented. Every result validated against the highest standards of scientific integrity.\n\nWe partner with the world's leading research institutions to build infrastructure that doesn't just support science — it accelerates it. From benchtop to production floor, we are the system behind the system.\n\nPrecision is not a feature we add at the end. It is the principle we start with. Our teams combine deep domain knowledge in analytical chemistry, biology, and materials science with engineering rigour to deliver solutions that hold up under the most demanding conditions imaginable.\n\nWhen accuracy is non-negotiable and repeatability is everything, institutions around the world choose us.",
   },
   {
@@ -38,6 +41,7 @@ const panels: PanelData[] = [
     category: "Lab Production",
     title: "Racks\nExhibition System",
     image: "/images/3.jpg",
+    href: "/lab-production",
     description: "Precision-engineered rack systems designed for the demands of modern exhibition and laboratory environments. Every joint, every surface, every configuration built for performance under pressure.\n\nFrom modular display solutions to heavy-load laboratory shelving, our systems adapt to any environment without compromise. Anodized aluminium profiles, tool-free assembly, and a weight-bearing capacity that exceeds industry standards by a factor of three.\n\nDeployed in museums, trade exhibition halls, cleanroom facilities, and pharmaceutical storage units worldwide — our racks are the silent infrastructure behind every successful presentation and every compliant operation.\n\nConfiguration is entirely modular. A single system can be reconfigured in under an hour to accommodate a new exhibit layout, a change in product line, or a shift in regulatory requirement. No specialist tools. No wasted lead time.\n\nWe design for the real world — where installations change, budgets are tight, and the only acceptable downtime is zero.",
   },
   {
@@ -46,6 +50,7 @@ const panels: PanelData[] = [
     category: "Project 3D",
     title: "Analysis\nProduct Sketch",
     image: "/images/4.jpg",
+    href: "/project-3d",
     description: "From initial sketch to final analysis, we bridge the gap between concept and production. Our 3D design and analysis pipeline turns ideas into manufacturable realities with precision that eliminates guesswork.\n\nEvery surface is tested virtually before it is built physically — reducing waste, accelerating timelines, and improving outcomes. Finite element analysis, fluid simulation, and topology optimisation run concurrently so that every design decision is backed by data before a single prototype is cut.\n\nOur design team works embedded within your engineering workflow, speaking the language of tolerances, materials, and manufacturing constraints from day one. The result: fewer revisions, faster sign-off, and products that perform exactly as designed.\n\nWe have delivered concept-to-production programmes across consumer electronics, medical devices, industrial equipment, and architectural hardware — each one on time, within tolerance, and ready for the line.\n\nIf your product has to be right the first time, this is where the process starts.",
   },
 ];
@@ -295,13 +300,13 @@ export default function PanelShowcase() {
         items.forEach(item => {
           item.style.transition = "none";
           item.style.opacity = "0";
-          item.style.transform = "translateY(16px)";
+          item.style.transform = "translateX(-32px)";
         });
         const t = setTimeout(() => {
           items.forEach((item, j) => {
-            item.style.transition = `opacity 0.35s ease ${j * 0.07}s, transform 0.35s ease ${j * 0.07}s`;
+            item.style.transition = `opacity 0.5s cubic-bezier(0.25,1,0.5,1) ${j * 0.09}s, transform 0.5s cubic-bezier(0.25,1,0.5,1) ${j * 0.09}s`;
             item.style.opacity = "1";
-            item.style.transform = "translateY(0)";
+            item.style.transform = "translateX(0)";
           });
         }, 700);
         return () => clearTimeout(t);
@@ -310,7 +315,8 @@ export default function PanelShowcase() {
   };
 
   return (
-    <div className="panels-container" ref={containerRef}>
+    <>
+    <div className="panels-container desktop-panels" ref={containerRef}>
       {panels.map((panel, i) => (
         <div
           key={panel.id}
@@ -363,25 +369,19 @@ export default function PanelShowcase() {
               </h2>
             </div>
             {/* Scrollable body */}
-            <div ref={el => { scrollBodyRefs.current[i] = el; }} style={{ overflowY: "auto", scrollbarWidth: "none", flex: 1, padding: "0 64px 60px", position: "relative" }}>
+            <div ref={el => { scrollBodyRefs.current[i] = el; }} style={{ overflowY: "auto", scrollbarWidth: "none", height: 280, flexShrink: 0, padding: "0 64px 32px", position: "relative" }}>
               <div className="exp-item" style={{ display: "flex", flexDirection: "column", gap: 32 }}>
                 {panel.description.split("\n\n").map((para, j) => (
-                  <p key={j} style={{ fontSize: 24, fontWeight: 400, lineHeight: 1.3, color: "#ffffff" }}>{para}</p>
+                  <p key={j} style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: "rgba(255,255,255,0.5)" }}>{para}</p>
                 ))}
               </div>
-              <button
-                className="exp-item exp-cta"
-                style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "13px 24px", background: "transparent", color: "#ffffff", fontSize: 14, fontWeight: 400, border: "1px solid rgba(255,255,255,0.25)", borderRadius: 100, cursor: "pointer", width: "fit-content", fontFamily: "inherit", marginTop: 28, letterSpacing: "0.02em" }}
-                onMouseEnter={e => { const svg = e.currentTarget.querySelector(".cta-arrow") as HTMLElement; if (svg) { svg.style.transform = "translateX(5px)"; } }}
-                onMouseLeave={e => { const svg = e.currentTarget.querySelector(".cta-arrow") as HTMLElement; if (svg) { svg.style.transform = "translateX(0)"; } }}
+            </div>
+            {/* Static CTA — stays fixed at bottom while text scrolls */}
+            <div style={{ padding: "64px 64px 48px", flexShrink: 0 }}>
+              <LineButton
+                className="exp-item"
                 onClick={() => { if (panel.href) navigateWithWipe(panel.href); }}
-              >
-                View Project
-                <svg className="cta-arrow" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transition: "transform 0.25s cubic-bezier(0.22,1,0.36,1)", flexShrink: 0 }}>
-                  <rect width="27.1291" height="27.1291" rx="13.5646" fill="white" />
-                  <path d="M14.7629 7.58057L13.9071 8.41419L18.4433 12.9665H6.38477V14.1634H18.4433L13.9071 18.6953L14.7629 19.5493L20.7472 13.5649L14.7629 7.58057Z" fill="black" />
-                </svg>
-              </button>
+              />
             </div>
           </div>
         </div>
@@ -390,5 +390,12 @@ export default function PanelShowcase() {
       {/* Wipe transition overlay — exit animation */}
       <div ref={wipeGreenRef} style={{ position: "fixed", inset: 0, background: "#11FF00", zIndex: 9999, display: "none", pointerEvents: "none", willChange: "transform" }} />
     </div>
+
+    {/* Mobile layout — hidden on desktop */}
+    <div className="mobile-panels-wrapper">
+      <MobilePanels wipeRef={wipeGreenRef} />
+    </div>
+
+    </>
   );
 }

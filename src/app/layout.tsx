@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
+import WipeOverlay from "@/components/WipeOverlay";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
   description: "Award-winning portfolio of industrial innovation",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,7 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${instrumentSans.variable} h-full antialiased`}>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <WipeOverlay />
+        {children}
+      </body>
     </html>
   );
 }

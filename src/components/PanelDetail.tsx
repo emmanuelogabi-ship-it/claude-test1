@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import LineButton from "./LineButton";
 
 export interface PanelData {
   id: number;
@@ -146,12 +147,7 @@ export default function PanelDetail({ panel, allPanels, onClose, onSwitch }: Pro
               <p key={i}>{para}</p>
             ))}
           </div>
-          <button className="panel-detail-cta">
-            View Project
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M2 7h10M7 2l5 5-5 5" />
-            </svg>
-          </button>
+          <LineButton />
         </div>
       </div>
     </div>
